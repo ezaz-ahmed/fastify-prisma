@@ -2,26 +2,24 @@ import Fastify from "fastify";
 
 import userRoutes from "./modules/user/user.route";
 
-const server = Fastify()
+const fastify = Fastify()
 
-server.get('/healthcheck', async () => {
+fastify.get('/healthcheck', async () => {
   return { status: "OK" }
 })
 
 async function main() {
 
-  server.register(userRoutes, {
+  fastify.register(userRoutes, {
     prefix: 'api/users'
   })
 
-  try {
-    await server.listen(3000, "0.0.0.0")
-
-    console.log(`Server ready at localhost:3000`)
-  } catch (error) {
-    console.error(error)
-    process.exit(1)
-  }
+  fastify.listen({ port: 3000, host: '0.0.0.0' })
+    .then((address) => console.log(`server listening on ${address}`))
+    .catch(err => {
+      console.log('Error starting server:', err)
+      process.exit(1)
+    })
 }
 
 main()
