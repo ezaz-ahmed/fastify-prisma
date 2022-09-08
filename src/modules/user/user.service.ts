@@ -1,10 +1,8 @@
 import { hasPassword } from "../../utils/hash";
 import prisma from "../../utils/prisma";
-import { createUserInput } from "./user.schema";
+import { CreateUserInput, } from "./user.schema";
 
-export async function createUser(input: createUserInput) {
-
-
+export async function createUser(input: CreateUserInput) {
   const { password, ...rest } = input
 
   const { hash, salt } = hasPassword(password)
@@ -14,4 +12,12 @@ export async function createUser(input: createUserInput) {
   })
 
   return user
+}
+
+export async function findUserByEmail(email: string) {
+  return prisma.user.findUnique({
+    where: {
+      email
+    }
+  })
 }
