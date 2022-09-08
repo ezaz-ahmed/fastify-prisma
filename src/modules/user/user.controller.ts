@@ -1,9 +1,10 @@
 
+import exp from 'constants'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { fastify } from '../../app'
 import { verifyPassword } from '../../utils/hash'
 import { CreateUserInput, LoginInput } from './user.schema'
-import { createUser, findUserByEmail } from './user.service'
+import { createUser, findUserByEmail, findUsers } from './user.service'
 
 export async function registerUserHandler(
   request: FastifyRequest<{
@@ -61,4 +62,13 @@ export async function loginHandler(
     console.error(error)
     return reply.code(500).send(error)
   }
+}
+
+export async function getUsersHandler(
+  request: FastifyRequest<{
+    Body: LoginInput
+  }>,
+  reply: FastifyReply) {
+
+  return await findUsers()
 }

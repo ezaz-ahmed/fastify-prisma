@@ -6,11 +6,17 @@ import { userSchemas } from "./modules/user/user.schema";
 
 export const fastify = Fastify()
 
+declare module "fastify" {
+  export interface FastifyInstance {
+    authenticate: 'any'
+  }
+}
+
 fastify.register(fjwt, {
   secret: "supersecret"
 })
 
-fastify.decorate("authenticated", async (request: FastifyRequest, reply: FastifyReply) => {
+fastify.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     await request.jwtVerify()
   } catch (error) {
