@@ -9,7 +9,7 @@ app.get('/healthcheck', async () => {
 async function main() {
   try {
     await app.listen({ port: 3000, host: '0.0.0.0' })
-    console.log('Server is ready at port 3000')
+    console.log(`Server is runnig at port: 3000`)
   } catch (error) {
     console.log(error)
     process.exit(1)
