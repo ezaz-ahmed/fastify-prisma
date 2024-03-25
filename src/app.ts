@@ -1,6 +1,8 @@
 import fastify from "fastify";
+import prisma from "./utils/prisma";
 import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
+import productRoutes from "./modules/product/product.route";
 
 const app = fastify();
 
@@ -9,14 +11,24 @@ app.get("/healthcheck", async () => {
 });
 
 async function main() {
-  for (const schema of userSchemas) {
+  for (const schema of [...userSchemas]) {
     app.addSchema(schema);
   }
 
-  app.register(userRoutes, { prefix: "api/users" });
+  app.register(userRoutes, {
+    prefix: "api/users",
+  });
+
+  app.register(productRoutes, {
+    prefix: "api/products",
+  });
 
   try {
-    await app.listen({ port: 3000, host: "0.0.0.0" });
+    await app.listen({
+      port: 3000,
+      host: "0.0.0.0",
+    });
+
     console.log(`Server is runnig at port: 3000`);
   } catch (error) {
     console.log(error);
